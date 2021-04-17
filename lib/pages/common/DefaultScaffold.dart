@@ -1,14 +1,10 @@
-import 'dart:math';
-
 import 'package:artisland/domain/user/user_manager.dart';
-import 'package:artisland/pages/common/Colors.dart';
 import 'package:artisland/pages/common/pen_widget.dart';
 import 'package:artisland/pages/homeContent/home.dart';
 import 'package:artisland/pages/common/topBar.dart';
 import 'package:artisland/pages/profile/Profile.dart';
 import 'package:artisland/pages/profile/profile_edit/edit_profile.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class DefualtScaffold extends StatefulWidget {
   @override
@@ -24,7 +20,7 @@ class _DefualtScaffoldState extends State<DefualtScaffold> with SingleTickerProv
   @override
   void initState() {
     _controller = TabController(length: 2, vsync: this);
-    views = [new Home(), new ProfileEdit()];
+    views = [new Home(), new Profile()];
 
     super.initState();
   }

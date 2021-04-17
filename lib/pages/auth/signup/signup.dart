@@ -80,7 +80,7 @@ class SignUp extends StatelessWidget {
                 child: ElevatedButton(
                   child: Container(
                     padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                    child: Text("Sign In", style: TextStyle(color: Colors.white)),
+                    child: Text("Sign un", style: TextStyle(color: Colors.white)),
                   ),
                   onPressed: () => handleSignUn(context),
                 ))

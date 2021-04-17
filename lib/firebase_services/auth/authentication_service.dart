@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:artisland/domain/user/user_manager.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,7 +15,7 @@ class AuthenticationService {
   static final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   static Stream<User> get userChanges => _firebaseAuth.authStateChanges();
 
-  static void printError(error, stackTrace) {
+  static void _printError(error, stackTrace) {
     print("\n");
     print("error: $error");
     print(stackTrace);
@@ -29,8 +30,8 @@ class AuthenticationService {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
       return null;
-    } on FirebaseAuthException catch (e) {
-      print("error :" + e.message);
+    } on FirebaseAuthException catch (e, s) {
+      _printError(e, s);
       return e.message;
     }
   }
@@ -39,4 +40,6 @@ class AuthenticationService {
     var user = await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
     return user.user.uid;
   }
+
+  static reload() => _firebaseAuth.currentUser.reload();
 }

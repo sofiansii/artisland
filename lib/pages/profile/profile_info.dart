@@ -51,8 +51,14 @@ class _ProfileInfoState extends State<ProfileInfo> {
           children: [
             Column(
               children: [
-                Card(
-                  child: Container(height: 200, decoration: BoxDecoration(gradient: LinearGradient(colors: gradientColor))),
+                // Card(
+                //   child: Container(height: 200, decoration: BoxDecoration(gradient: LinearGradient(colors: gradientColor))),
+                // ),
+                Image.network(
+                  UserManager.user.backgroundImage,
+                  height: 200,
+                  width: MediaQuery.of(context).size.width,
+                  fit: BoxFit.fill,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,

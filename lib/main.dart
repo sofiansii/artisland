@@ -1,5 +1,6 @@
 import 'package:artisland/domain/post/post_manager.dart';
 import 'package:artisland/domain/user/user_manager.dart';
+import 'package:artisland/firebase_services/auth/authentication_service.dart';
 import 'package:artisland/firebase_services/firebase_firestore.dart';
 import 'package:artisland/pages/auth/signin/signinForm.dart';
 import 'package:artisland/domain/user/user_manager.dart';
@@ -74,6 +75,10 @@ class AuthWrapper extends StatefulWidget {
 class _AuthWrapperState extends State<AuthWrapper> {
   @override
   Widget build(BuildContext context) {
+
+    
+
+
     return StreamBuilder(
         stream: UserManager.userStream,
         initialData: null,

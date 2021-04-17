@@ -18,7 +18,6 @@ class _CommentPageState extends State<CommentPage> {
   TextEditingController _controller = TextEditingController();
   FocusNode focusNode = FocusNode();
   int editing = -1;
-  var image = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAp-X6qZnvz-hHgz6rnB8MDA_sSLd_IALjgg&usqp=CAU";
 
   Widget _itemBuilder(BuildContext c, i) {
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
@@ -27,7 +26,7 @@ class _CommentPageState extends State<CommentPage> {
         child: Row(
           children: [
             CircleAvatar(
-              backgroundImage: NetworkImage(image),
+              backgroundImage: NetworkImage(widget.postData.comments[i].image),
               radius: 20,
             ),
             Expanded(

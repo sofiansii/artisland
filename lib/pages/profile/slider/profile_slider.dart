@@ -5,14 +5,10 @@ import 'package:artisland/domain/post/post_manager.dart';
 import 'package:artisland/domain/user/user_manager.dart';
 import 'package:artisland/pages/profile/newPost/new_post.dart';
 import 'package:artisland/pages/profile/slider/my_progress_bar.dart';
-import 'package:artisland/pages/profile/slider/post.dart';
-import 'package:artisland/pages/profile/slider/post/post_slider.dart';
 import 'package:artisland/pages/profile/slider/posts_overlay.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:provider/provider.dart';
 
 class ProfileSlider extends StatefulWidget {
   @override
@@ -32,11 +28,8 @@ class _ProfileSliderState extends State<ProfileSlider> {
     super.initState();
   }
 
-  final testUrl =
-      "https://media.istockphoto.com/photos/thisis-what-its-all-about-picture-id1155613377?k=6&m=1155613377&s=612x612&w=0&h=qa03hxFs1grJG6n338AR_Nt1Ivp_7ze9GdaYFe_SVDY=";
-
   Future<List<PostData>> getUserPosts() async {
-    posts.addAll((await PostManager.getPersonalPosts()).reversed);
+    posts = (await PostManager.getPersonalPosts());
     return posts;
   }
 

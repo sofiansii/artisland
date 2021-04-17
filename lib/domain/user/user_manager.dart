@@ -13,6 +13,9 @@ class UserManager {
 
   static _onListen() {
     AuthenticationService.userChanges.listen((event) async {
+      print("\n");
+      print("|||||||||: auth changes $event");
+      print("\n");
       if (event != null)
         user = await getUser(event.uid);
       else
@@ -63,6 +66,8 @@ class UserManager {
         "email": email,
       };
       await dbUser.set(data);
+      await AuthenticationService.signOut();
+      await AuthenticationService.signIn(email: email, password: password);
       return null;
     } catch (e, s) {
       _printError(e, s);
@@ -76,6 +81,7 @@ class UserManager {
     try {
       var dbUser = await _storeService.getUserRef(uid).get();
       var user = User(
+        uid: dbUser.id,
         fullName: dbUser.get("fullName"),
         email: dbUser.get("email"),
         backgroundImage: dbUser.get("backgroundImage"),

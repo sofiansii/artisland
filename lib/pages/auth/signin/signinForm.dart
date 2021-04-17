@@ -8,7 +8,6 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class SignInForm extends StatelessWidget {
-  BuildContext _context;
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   var loading = AlertDialog(
@@ -18,27 +17,28 @@ class SignInForm extends StatelessWidget {
         child: CircularProgressIndicator(value: null),
       ));
 
-  AlertDialog getErrorDialog(String text) {
+  AlertDialog getErrorDialog(c, String text) {
     return AlertDialog(
-      content: Text(text),
+      content: Text((text) != null && text.isNotEmpty ? text : "unknown error"),
       actions: [
         TextButton(
           child: Text('ok'),
           onPressed: () {
-            Navigator.of(_context).pop();
+            Navigator.of(c).pop();
           },
         )
       ],
     );
   }
 
-  void showErrordialog(String error) {
+  void showErrordialog(c, String error) {
+    var _c;
     showDialog(
         builder: (c) {
-          _context = c;
-          return getErrorDialog(error);
+          _c = c;
+          return getErrorDialog(_c, error);
         },
-        context: _context);
+        context: c);
   }
 
   void showLoading(BuildContext c) {
@@ -47,33 +47,38 @@ class SignInForm extends StatelessWidget {
         barrierDismissible: false,
         context: c,
         builder: (c) {
-          _context = c;
           return loading;
         });
   }
 
-  void hideLoading() => Navigator.of(_context).pop();
+  void hideLoading(c) => Navigator.of(c).pop();
 
   InputDecoration getOutlineBorder(String label) {
     return new InputDecoration(labelText: label, border: OutlineInputBorder(borderSide: BorderSide(color: Colors.red, width: 100)));
   }
 
-  void handleSignIn(BuildContext c) {
+  void handleSignIn(BuildContext c) async {
     showLoading(c);
-    AuthenticationService.signIn(email: emailController.text.trim(), password: passwordController.text.trim()).then(
-      (res) {
-        if (res == "ok") {
-          hideLoading();
-        } else {
-          hideLoading();
-          showErrordialog(res);
-        }
-      },
-    );
+    var res = await AuthenticationService.signIn(email: emailController.text.trim(), password: passwordController.text.trim());
+    print("hey: $res");
+    if (res == null) {
+      hideLoading(c);
+    } else {
+      hideLoading(c);
+      showErrordialog(c, res);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    InputDecoration getOutlineBorder(String label) {
+      return new InputDecoration(
+          labelText: label,
+          border: OutlineInputBorder(borderSide: BorderSide(color: Colors.red, width: 100)),
+          focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 1)),
+          hintStyle: Theme.of(context).textTheme.caption.copyWith(color: Colors.black));
+    }
+
     return Card(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -90,20 +95,21 @@ class SignInForm extends StatelessWidget {
             controller: passwordController,
           ),
           SizedBox(height: 50),
-          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            RaisedButton(
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              child: Text("Sign In", style: TextStyle(color: Colors.white)),
-              color: Colors.blue[400],
-              onPressed: () => handleSignIn(context),
-            ),
-            RaisedButton(
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              child: Text("Sign Un", style: TextStyle(color: Colors.white)),
-              color: Colors.blue[400],
-              onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (c) => SignUp())),
-            ),
-          ])
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              RaisedButton(
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                child: Text("Sign up", style: TextStyle(color: Colors.white)),
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (c) => SignUp())),
+              ),
+              RaisedButton(
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                child: Text("Sign In", style: TextStyle(color: Colors.white)),
+                onPressed: () => handleSignIn(context),
+              ),
+            ]),
+          )
         ],
       ),
     );

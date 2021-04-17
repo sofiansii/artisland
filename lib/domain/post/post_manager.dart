@@ -209,8 +209,12 @@ class PostManager {
 
   static Future<List<PostData>> getPersonalPosts({String uid}) async {
     try {
-      var refs =
-          (await _storeService.getPostsRef().where("uid", isEqualTo: uid == null ? UserManager.user.uid : uid).where("private", isNotEqualTo: uid == null ? null : true).get());
+      var refs = (await _storeService
+          .getPostsRef()
+          .where("uid", isEqualTo: uid == null ? UserManager.user.uid : uid)
+          .where("private", isNotEqualTo: uid == null ? null : true)
+          .orderBy("time")
+          .get());
       var docs = refs.docs;
       if (docs == null) return [];
       List<Future<PostData>> futures = [];
